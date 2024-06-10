@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transfer-api-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: transfer-api
+  template:
+    metadata:
+      labels:
+        app: transfer-api
+    spec:
+      containers:
+        - name: transfer-api
+          image: <your-dockerhub-username>/transfer-api:latest
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transfer-api-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: transfer-api
